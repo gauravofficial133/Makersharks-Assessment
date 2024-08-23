@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: "supplier-details-service"
+  datasource:
+    url: jdbc:mysql://localhost:3306/suppliers?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&autoReconnect=true&useSSL=false
+    username: "root"
+    password: "Test"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update
+
+
+

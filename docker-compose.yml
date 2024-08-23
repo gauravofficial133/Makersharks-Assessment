@@ -1,0 +1,35 @@
+services:
+  suppliers-db:
+    image: mysql:8.0
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: "Test"
+      MYSQL_DATABASE: "suppliers"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-p Test" ]
+      retries: 3
+      timeout: 5s
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./suppliers-db:/var/lib/mysql
+    networks:
+      - suppliers-network
+
+  supplier-details-service:
+    image: gauravkr133/supplier-details-service:latest
+    container_name: supplier-details-service
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:mysql://suppliers-db:3306/suppliers"
+    depends_on:
+      suppliers-db:
+        condition: service_healthy
+    networks:
+      - suppliers-network
+
+networks:
+  suppliers-network:
+    name: suppliers-network
